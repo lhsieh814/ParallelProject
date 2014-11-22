@@ -10,34 +10,33 @@
 
 
     <EditText
-        android:id="@+id/editText1"
-        android:layout_width="200dp"
+        android:id="@+id/matrixSize"
+        android:layout_width="150dp"
         android:layout_height="40dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:ems="10"
         android:inputType="number"
-        android:text="Matrix Size" >
+        android:text="Matrix Size" />
 
-        <requestFocus />
-    </EditText>
-
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="100dp"
-        android:layout_height="40dp"
-        android:layout_alignTop="@+id/editText1"
-        android:layout_toRightOf="@+id/editText1"
-        android:text="Generate" />
+        
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/computationTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/editText1"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="33dp"
         android:layout_marginLeft="16dp"
         android:text="Computation Time" />
+
+    <Button
+        android:id="@+id/generateButton"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_alignTop="@+id/matrixSize"
+        android:layout_marginLeft="22dp"
+        android:layout_toRightOf="@+id/matrixSize"
+        android:text="Generate" />
 
 </RelativeLayout>

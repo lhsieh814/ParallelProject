@@ -6,14 +6,44 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 
 public class MainActivity extends ActionBarActivity {
 
+	Button generate;
+	EditText size;
+	TextView computationTime;
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+        generate = (Button) findViewById(R.id.generateButton);
+        size = (EditText) findViewById(R.id.matrixSize);
+        computationTime = (TextView) findViewById(R.id.computationTime);
+        
+        generate.setOnClickListener(
+                new View.OnClickListener()
+                {
+                    public void onClick(View view)
+                    {
+                    	int matrixSize;
+                    	try{
+                    		matrixSize = Integer.parseInt(size.getText().toString());
+                    		computationTime.setText("the size of matrix is : "+matrixSize);
+                    	}
+                    	catch(NumberFormatException e){
+                    		computationTime.setText("Error!!!! You need to input a number");
+                    	}
+                    }
+                }
+        );
+        
     }
 
 
