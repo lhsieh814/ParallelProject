@@ -29,15 +29,14 @@
         android:layout_alignTop="@+id/editText1"
         android:layout_toRightOf="@+id/editText1"
         android:text="Generate" />
-
-    <TextView
-        android:id="@+id/textView1"
+    <EditText
+        android:id="@+id/editText2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/editText1"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="33dp"
-        android:layout_marginLeft="16dp"
+        android:ems="10"
+        android:inputType="numberSigned"
         android:text="Computation Time" />
 
 </RelativeLayout>

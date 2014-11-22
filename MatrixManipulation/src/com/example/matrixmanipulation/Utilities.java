@@ -1,0 +1,20 @@
+package com.example.matrixmanipulation;
+
+import java.util.Random;
+
+public class Utilities {
+    
+    public static int[][] generateMatrix(int size){
+    	int[][] matrix = new int[size][size];
+    	
+    	for(int i =0;i<size; i++){
+    		for(int j = 0 ; j<size; j++){
+    			Random r = new Random();
+    			
+    			matrix[i][j] = r.nextInt()%10;
+    		}
+    	}
+    	
+    	return matrix;
+    }
+}
