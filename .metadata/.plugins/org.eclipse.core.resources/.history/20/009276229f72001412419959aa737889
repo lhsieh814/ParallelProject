@@ -92,8 +92,7 @@ public class MainActivity extends ActionBarActivity {
             Bitmap bitmap = BitmapFactory.decodeFile(picturePath);
             Bitmap scaled = Bitmap.createScaledBitmap(bitmap, 2000, 2000, true);
             int[][] array = Utilities.convertMapToArray(scaled);
-            Bitmap finalMap = Bitmap.createScaledBitmap(Utilities.convertArrayToMap(Utilities.sort(array)),200,200,true);
-            
+            Bitmap finalMap = Utilities.convertArrayToMap(Utilities.sort(array));
             imageView.setImageBitmap(finalMap);
          
         }
