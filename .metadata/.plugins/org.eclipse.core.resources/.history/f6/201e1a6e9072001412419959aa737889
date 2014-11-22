@@ -117,7 +117,7 @@ public class Utilities {
     	return result;
     }
     
-    public static int[][] convertMapToArray(Bitmap map){
+    public static int[][] convertMapToPixel(Bitmap map){
     	int width =map.getWidth();
     	int height = map.getHeight();
     	int[][] result = new int[height][width];
@@ -127,21 +127,8 @@ public class Utilities {
     			result[i][j]=map.getPixel(j, i);
     		}
     	}
+    	
     	return result;
     	
     }
-    
-    public static Bitmap convertArrayToMap(int[][] array){
-    	
-    	Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
-    	Bitmap bmp = Bitmap.createBitmap(array[0].length, array.length, conf);
-    	
-    	for(int i=0; i<array.length; i++){
-    		for(int j=0; j<array[0].length; j++){
-    			bmp.setPixel(j, i, array[i][j]);
-    		}
-    	}
-    	return bmp;
-    }
-    
 }

@@ -3,7 +3,7 @@
     package="com.example.matrixmanipulation"
     android:versionCode="1"
     android:versionName="1.0" >
-	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="19" />
@@ -23,6 +23,6 @@
             </intent-filter>
         </activity>
     </application>
-     
+     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
 </manifest>

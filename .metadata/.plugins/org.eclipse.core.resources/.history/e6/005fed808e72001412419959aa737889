@@ -41,8 +41,10 @@
 
     <ImageView
         android:id="@+id/imageView1"
-        android:layout_height = "400dp"
-        android:layout_width = "400dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/computationTime"
+        android:layout_below="@+id/matrixSize"
         android:layout_marginTop="26dp"
         android:src="@drawable/abc_ab_bottom_solid_dark_holo" />
 

@@ -136,12 +136,8 @@ public class Utilities {
     	Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
     	Bitmap bmp = Bitmap.createBitmap(array[0].length, array.length, conf);
     	
-    	for(int i=0; i<array.length; i++){
-    		for(int j=0; j<array[0].length; j++){
-    			bmp.setPixel(j, i, array[i][j]);
-    		}
-    	}
-    	return bmp;
+    	
+    	return null;
     }
     
 }

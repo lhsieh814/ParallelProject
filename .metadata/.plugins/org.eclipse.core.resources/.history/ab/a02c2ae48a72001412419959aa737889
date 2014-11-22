@@ -39,11 +39,4 @@
         android:layout_toRightOf="@+id/matrixSize"
         android:text="Generate" />
 
-    <ImageView
-        android:id="@+id/imageView1"
-        android:layout_height = "400dp"
-        android:layout_width = "400dp"
-        android:layout_marginTop="26dp"
-        android:src="@drawable/abc_ab_bottom_solid_dark_holo" />
-
 </RelativeLayout>
