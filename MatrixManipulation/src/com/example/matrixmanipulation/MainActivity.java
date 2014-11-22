@@ -7,9 +7,11 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +26,7 @@ public class MainActivity extends ActionBarActivity {
 	Button generate;
 	EditText size;
 	TextView computationTime;
+	ImageView image;
 	private static int RESULT_LOAD_IMAGE = 1;
 	
     @Override
@@ -31,10 +34,9 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        generate = (Button) findViewById(R.id.generateButton);
-        size = (EditText) findViewById(R.id.matrixSize);
         computationTime = (TextView) findViewById(R.id.computationTime);
-        generate.setOnClickListener(new View.OnClickListener() {
+        image = (ImageView) findViewById(R.id.imageView1);
+        image.setOnClickListener(new View.OnClickListener() {
             
             @Override
             public void onClick(View arg0) {
@@ -88,7 +90,10 @@ public class MainActivity extends ActionBarActivity {
              
             ImageView imageView = (ImageView) findViewById(R.id.imageView1);
             Bitmap bitmap = BitmapFactory.decodeFile(picturePath);
-            imageView.setImageBitmap(Bitmap.createScaledBitmap(bitmap, 400, 400, true));
+            Bitmap scaled = Bitmap.createScaledBitmap(bitmap, 2000, 2000, true);
+            int[][] array = Utilities.convertMapToArray(scaled);
+            Bitmap finalMap = Utilities.convertArrayToMap(Utilities.sort(array));
+            imageView.setImageBitmap(finalMap);
          
         }
      

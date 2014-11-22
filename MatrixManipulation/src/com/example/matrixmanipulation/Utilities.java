@@ -92,7 +92,7 @@ public class Utilities {
     	
     	//sort
     	for(int i=0; i<size; i++){
-    		Arrays.sort(matrix[i]);
+    		Arrays.sort(result[i]);
     	}
     	
     	return result;
