@@ -145,7 +145,7 @@ public class Utilities {
     	return bmp;
     }
     
-    public static void dothings(int[][] matrix, boolean flipH, boolean flipV, boolean rotateCW, boolean rotateCCW, boolean sort, boolean serial){
+    public static int[][] dothings(int[][] matrix, boolean flipH, boolean flipV, boolean rotateCW, boolean rotateCCW, boolean sort, boolean serial){
     	//flip horizontally
     	if(flipH){
     		if(serial){
@@ -196,6 +196,7 @@ public class Utilities {
     			
     		}
     	}
+    	return matrix;
     }
     
     
