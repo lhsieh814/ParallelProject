@@ -61,24 +61,24 @@
         android:id="@+id/computationTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/flipV"
-        android:layout_centerHorizontal="true"
-        android:text="" />
+        android:layout_above="@+id/flipH"
+        android:layout_alignLeft="@+id/flipH"
+        android:layout_marginLeft="14dp" />
 
     <Button
         android:id="@+id/parallelButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/rotateCCW"
         android:layout_below="@+id/sort"
-        android:layout_toRightOf="@+id/flipH"
         android:text="Paralle" />
 
     <Button
         android:id="@+id/serialButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/computationTime"
         android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@+id/imageView1"
         android:text="Serial" />
 
 </RelativeLayout>
