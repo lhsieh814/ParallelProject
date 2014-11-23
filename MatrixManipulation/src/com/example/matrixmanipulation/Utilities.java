@@ -36,6 +36,7 @@ public class Utilities {
     }
     
     
+    
     public static int[][] flipVertically(int[][] matrix){
     	int size = matrix.length;
     	
@@ -143,5 +144,59 @@ public class Utilities {
     	}
     	return bmp;
     }
+    
+    public static void dothings(int[][] matrix, boolean flipH, boolean flipV, boolean rotateCW, boolean rotateCCW, boolean sort, boolean serial){
+    	//flip horizontally
+    	if(flipH){
+    		if(serial){
+    			matrix=flipHorizontally(matrix);
+    		}
+    		else{
+    			
+    		}
+    	}
+    	
+    	//flip vertically
+    	if(flipV){
+    		if(serial){
+    			matrix=flipVertically(matrix);
+    		}
+    		else{
+    			
+    		}
+    	}
+    	
+    	//rotate clockwise
+    	if(rotateCW){
+    		if(serial){
+    			matrix=rotateClockWise(matrix);
+    		}
+    		else{
+    			
+    		}
+    	}
+    	
+    	//rotate counter clockwise
+    	if(rotateCCW){
+    		if(serial){
+    			matrix=rotateCounterClockWise(matrix);
+    		}
+    		else{
+    			
+    		}
+    	}
+    	
+    	
+    	//sort
+    	if(sort){
+    		if(serial){
+    			matrix=sort(matrix);
+    		}
+    		else{
+    			
+    		}
+    	}
+    }
+    
     
 }
