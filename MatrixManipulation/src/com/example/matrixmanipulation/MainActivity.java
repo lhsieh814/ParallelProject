@@ -21,8 +21,7 @@ import android.widget.TextView;
 public class MainActivity extends ActionBarActivity {
 
 	private static int RESULT_LOAD_IMAGE = 1;
-	int width;
-	int size;
+	int width, size;
 	String sizeS;
 	Button buttonSerial, buttonParallel;
 	ImageView imageView;
@@ -55,7 +54,16 @@ public class MainActivity extends ActionBarActivity {
 		}
 
 		// Action listener
+		editSize.setOnClickListener(new View.OnClickListener() {
 
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				editSize.setText("");
+			}
+			
+		});
+		
 		buttonSerial.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -69,9 +77,16 @@ public class MainActivity extends ActionBarActivity {
 					editSize.setText("2000");
 				}
 
-				Bitmap scaled = Bitmap.createScaledBitmap(bitmap, size, size,
-						true);
-				images = Utilities.convertMapToArray(scaled);
+				if (images == null) {
+					Bitmap scaled = Bitmap.createScaledBitmap(bitmap, size,
+							size, true);
+					images = Utilities.convertMapToArray(scaled);
+				} else {
+					bitmap = Utilities.convertArrayToMap(images);
+					Bitmap scaled = Bitmap.createScaledBitmap(bitmap, size,
+							size, true);
+					images = Utilities.convertMapToArray(scaled);
+				}
 
 				long start = System.currentTimeMillis();
 				int[][] array = Utilities.dothings(images,
@@ -104,9 +119,16 @@ public class MainActivity extends ActionBarActivity {
 					size = 2000;
 					editSize.setText("2000");
 				}
-				Bitmap scaled = Bitmap.createScaledBitmap(bitmap, size, size,
-						true);
-				images = Utilities.convertMapToArray(scaled);
+				if (images == null) {
+					Bitmap scaled = Bitmap.createScaledBitmap(bitmap, size,
+							size, true);
+					images = Utilities.convertMapToArray(scaled);
+				} else {
+					bitmap = Utilities.convertArrayToMap(images);
+					Bitmap scaled = Bitmap.createScaledBitmap(bitmap, size,
+							size, true);
+					images = Utilities.convertMapToArray(scaled);
+				}
 				long start = System.currentTimeMillis();
 				int[][] array = Utilities.dothings(images,
 						arrayCheckboxes[0].isChecked(),
