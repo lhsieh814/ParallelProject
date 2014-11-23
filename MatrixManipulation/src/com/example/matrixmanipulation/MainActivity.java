@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,8 +22,12 @@ public class MainActivity extends ActionBarActivity {
 
 	private static int RESULT_LOAD_IMAGE = 1;
 	int width;
+	int size;
+	String sizeS;
 	Button buttonSerial, buttonParallel;
 	ImageView imageView;
+	EditText editSize;
+	Bitmap bitmap;
 	TextView computationTime;
 	CheckBox[] arrayCheckboxes = new CheckBox[5];
 	int[] checkboxesID = { R.id.flipH, R.id.flipV, R.id.rotateCW,
@@ -43,17 +48,31 @@ public class MainActivity extends ActionBarActivity {
 		buttonParallel = (Button) findViewById(R.id.parallelButton);
 		imageView = (ImageView) findViewById(R.id.imageView1);
 		computationTime = (TextView) findViewById(R.id.computationTime);
+		editSize = (EditText) findViewById(R.id.size);
 
 		for (int i = 0; i < arrayCheckboxes.length; i++) {
 			arrayCheckboxes[i] = (CheckBox) findViewById(checkboxesID[i]);
 		}
 
 		// Action listener
+
 		buttonSerial.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				sizeS = editSize.getText().toString();
+				try {
+					size = Integer.parseInt(sizeS);
+				} catch (NumberFormatException e) {
+					size = 2000;
+					editSize.setText("2000");
+				}
+
+				Bitmap scaled = Bitmap.createScaledBitmap(bitmap, size, size,
+						true);
+				images = Utilities.convertMapToArray(scaled);
+
 				long start = System.currentTimeMillis();
 				int[][] array = Utilities.dothings(images,
 						arrayCheckboxes[0].isChecked(),
@@ -78,6 +97,16 @@ public class MainActivity extends ActionBarActivity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				sizeS = editSize.getText().toString();
+				try {
+					size = Integer.parseInt(sizeS);
+				} catch (NumberFormatException e) {
+					size = 2000;
+					editSize.setText("2000");
+				}
+				Bitmap scaled = Bitmap.createScaledBitmap(bitmap, size, size,
+						true);
+				images = Utilities.convertMapToArray(scaled);
 				long start = System.currentTimeMillis();
 				int[][] array = Utilities.dothings(images,
 						arrayCheckboxes[0].isChecked(),
@@ -148,14 +177,12 @@ public class MainActivity extends ActionBarActivity {
 			cursor.close();
 
 			imageView = (ImageView) findViewById(R.id.imageView1);
-			Bitmap bitmap = BitmapFactory.decodeFile(picturePath);
-			Bitmap scaled = Bitmap.createScaledBitmap(bitmap, 2000, 2000, true);
-			images = Utilities.convertMapToArray(scaled);
-
+			bitmap = BitmapFactory.decodeFile(picturePath);
 			Bitmap finalMap = Bitmap.createScaledBitmap(bitmap, width, width,
 					true);
 
 			imageView.setImageBitmap(finalMap);
+
 		}
 	}
 }

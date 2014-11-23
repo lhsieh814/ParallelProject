@@ -81,4 +81,14 @@
         android:layout_alignParentBottom="true"
         android:text="Serial" />
 
+    <EditText
+        android:id="@+id/size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/computationTime"
+        android:layout_alignParentRight="true"
+        android:ems="6"
+        android:inputType="number"
+        android:text="Matrix Size" />
+
 </RelativeLayout>
