@@ -15,17 +15,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 public class MainActivity extends ActionBarActivity {
 
+	private static int RESULT_LOAD_IMAGE = 1;
+	int width;
 	Button buttonSerial, buttonParallel;
+	ImageView imageView;
+	TextView computationTime;
+	CheckBox[] arrayCheckboxes = new CheckBox[5];
 	int[] checkboxesID = { R.id.flipH, R.id.flipV, R.id.rotateCW,
 			R.id.rotateCCW, R.id.sort };
-	CheckBox[] arrayCheckboxes = new CheckBox[5];
-	ImageView imageView;
-	private static int RESULT_LOAD_IMAGE = 1;
 	int[][] images = null;
-	int width;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,12 +41,12 @@ public class MainActivity extends ActionBarActivity {
 		// Initialization
 		buttonSerial = (Button) findViewById(R.id.serialButton);
 		buttonParallel = (Button) findViewById(R.id.parallelButton);
+		imageView = (ImageView) findViewById(R.id.imageView1);
+		computationTime = (TextView) findViewById(R.id.computationTime);
 
 		for (int i = 0; i < arrayCheckboxes.length; i++) {
 			arrayCheckboxes[i] = (CheckBox) findViewById(checkboxesID[i]);
 		}
-
-		imageView = (ImageView) findViewById(R.id.imageView1);
 
 		// Action listener
 		buttonSerial.setOnClickListener(new View.OnClickListener() {
@@ -52,17 +54,21 @@ public class MainActivity extends ActionBarActivity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				long start = System.currentTimeMillis();
 				int[][] array = Utilities.dothings(images,
 						arrayCheckboxes[0].isChecked(),
 						arrayCheckboxes[1].isChecked(),
 						arrayCheckboxes[2].isChecked(),
 						arrayCheckboxes[3].isChecked(),
 						arrayCheckboxes[4].isChecked(), true);
+				long end = System.currentTimeMillis();
 				Bitmap finalMap = Bitmap.createScaledBitmap(
 						Utilities.convertArrayToMap(array), width, width, true);
 				imageView.setImageBitmap(finalMap);
-				//update original image
+				// update original image
 				images = array;
+				computationTime.setText("Serial Execution Time is: "
+						+ (end - start) + "ms.");
 			}
 
 		});
@@ -72,17 +78,21 @@ public class MainActivity extends ActionBarActivity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				long start = System.currentTimeMillis();
 				int[][] array = Utilities.dothings(images,
 						arrayCheckboxes[0].isChecked(),
 						arrayCheckboxes[1].isChecked(),
 						arrayCheckboxes[2].isChecked(),
 						arrayCheckboxes[3].isChecked(),
 						arrayCheckboxes[4].isChecked(), false);
+				long end = System.currentTimeMillis();
 				Bitmap finalMap = Bitmap.createScaledBitmap(
 						Utilities.convertArrayToMap(array), width, width, true);
 				imageView.setImageBitmap(finalMap);
-				//update original image
+				// update original image
 				images = array;
+				computationTime.setText("Serial Execution Time is: "
+						+ (end - start) + "ms.");
 			}
 		});
 
