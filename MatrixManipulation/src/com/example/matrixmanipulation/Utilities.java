@@ -14,7 +14,7 @@ import android.graphics.Bitmap;
 
 public class Utilities {
 
-    private static final int NUM_THREADS = 4;
+    private static int num_threads;
 
     public static int[][] generateMatrix(int size) {
         int[][] matrix = new int[size][size];
@@ -143,9 +143,12 @@ public class Utilities {
         return bmp;
     }
 
-    public static int[][] matrixManipulation(int[][] matrix, boolean flipH, boolean flipV, boolean rotateCW, boolean rotateCCW, boolean sort, boolean serial) {
-        int num_rows = matrix.length / NUM_THREADS;
-        ExecutorService executorService = Executors.newFixedThreadPool(NUM_THREADS);
+    public static int[][] matrixManipulation(int[][] matrix, boolean flipH, boolean flipV,
+                                             boolean rotateCW, boolean rotateCCW, boolean sort,
+                                             boolean serial, int numThreads) {
+        num_threads = numThreads;
+        int num_rows = matrix.length / num_threads;
+        ExecutorService executorService = Executors.newFixedThreadPool(num_threads);
         Callable<int[][]> callable;
         List<Callable<int[][]>> tasks;
         List<Future<int[][]>> list;
@@ -158,7 +161,7 @@ public class Utilities {
                 tasks = new ArrayList<Callable<int[][]>>();
 
                 // distribute rows to each thread
-                for (int x = 0; x < NUM_THREADS; x++) {
+                for (int x = 0; x < num_threads; x++) {
                     callable = new ParallelCallable(matrix, x * num_rows, num_rows, ManipulationType.FLIP_H);
                     // store the callable objects in tasks to run with executor service all at once
                     tasks.add(callable);
@@ -187,7 +190,7 @@ public class Utilities {
             } else {
                 tasks = new ArrayList<Callable<int[][]>>();
 
-                for (int x = 0; x < NUM_THREADS; x++) {
+                for (int x = 0; x < num_threads; x++) {
                     callable = new ParallelCallable(matrix, x * num_rows, num_rows, ManipulationType.FLIP_V);
                     tasks.add(callable);
                 }
@@ -213,7 +216,7 @@ public class Utilities {
             } else {
                 tasks = new ArrayList<Callable<int[][]>>();
 
-                for (int x = 0; x < NUM_THREADS; x++) {
+                for (int x = 0; x < num_threads; x++) {
                     callable = new ParallelCallable(matrix, x * num_rows, num_rows, ManipulationType.ROTATE_CW);
                     tasks.add(callable);
                 }
@@ -238,7 +241,7 @@ public class Utilities {
             } else {
                 tasks = new ArrayList<Callable<int[][]>>();
 
-                for (int x = 0; x < NUM_THREADS; x++) {
+                for (int x = 0; x < num_threads; x++) {
                     callable = new ParallelCallable(matrix, x * num_rows, num_rows, ManipulationType.ROTATE_CCW);
                     tasks.add(callable);
                 }
@@ -263,7 +266,7 @@ public class Utilities {
             } else {
                 tasks = new ArrayList<Callable<int[][]>>();
 
-                for (int x = 0; x < NUM_THREADS; x++) {
+                for (int x = 0; x < num_threads; x++) {
                     callable = new ParallelCallable(matrix, x * num_rows, num_rows, ManipulationType.SORT);
                     tasks.add(callable);
                 }

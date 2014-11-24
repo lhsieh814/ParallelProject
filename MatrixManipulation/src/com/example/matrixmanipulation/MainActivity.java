@@ -16,22 +16,24 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
 
     private static int RESULT_LOAD_IMAGE = 1;
-    int width, size;
-    String sizeS;
-    Button buttonSerial, buttonParallel;
-    ImageView imageView;
-    EditText editSize;
-    Bitmap bitmap;
-    TextView computationTime;
-    CheckBox[] arrayCheckboxes = new CheckBox[5];
-    int[] checkboxesID = {R.id.flipH, R.id.flipV, R.id.rotateCW,
+    private int width, size, numThreads;
+    private String sizeS;
+    private Button buttonSerial, buttonParallel;
+    private ImageView imageView;
+    private EditText editSize;
+    private Bitmap bitmap;
+    private TextView computationTime;
+    private CheckBox[] arrayCheckboxes = new CheckBox[5];
+    private int[] checkboxesID = {R.id.flipH, R.id.flipV, R.id.rotateCW,
             R.id.rotateCCW, R.id.sort};
-    int[][] images = null;
+    private int[][] images = null;
+    private Spinner matrixSpinner, threadSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,21 +49,12 @@ public class MainActivity extends Activity {
         buttonParallel = (Button) findViewById(R.id.parallelButton);
         imageView = (ImageView) findViewById(R.id.imageView1);
         computationTime = (TextView) findViewById(R.id.computationTime);
-        editSize = (EditText) findViewById(R.id.size);
+        matrixSpinner = (Spinner) findViewById(R.id.matrix_spinner);
+        threadSpinner  = (Spinner) findViewById(R.id.thread_spinner);
 
         for (int i = 0; i < arrayCheckboxes.length; i++) {
             arrayCheckboxes[i] = (CheckBox) findViewById(checkboxesID[i]);
         }
-
-        // Clear matrix size when EditText field is clicked
-        editSize.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                editSize.setText("");
-            }
-
-        });
 
         // Serial Execution
         buttonSerial.setOnClickListener(new View.OnClickListener() {
@@ -99,13 +92,16 @@ public class MainActivity extends Activity {
     }
 
     public void clickSerialButton() {
-        sizeS = editSize.getText().toString();
+        sizeS = String.valueOf(matrixSpinner.getSelectedItem());
+
         try {
             size = Integer.parseInt(sizeS);
         } catch (NumberFormatException e) {
             size = 2000;
             editSize.setText("2000");
         }
+
+        numThreads = Integer.parseInt(String.valueOf(threadSpinner.getSelectedItem()));
 
         Bitmap scaled = Bitmap.createScaledBitmap(bitmap, size, size, true);
         images = Utilities.convertMapToArray(scaled);
@@ -116,7 +112,7 @@ public class MainActivity extends Activity {
                 arrayCheckboxes[1].isChecked(),
                 arrayCheckboxes[2].isChecked(),
                 arrayCheckboxes[3].isChecked(),
-                arrayCheckboxes[4].isChecked(), true);
+                arrayCheckboxes[4].isChecked(), true, numThreads);
         long end = System.currentTimeMillis();
         Bitmap finalMap = Bitmap.createScaledBitmap(
                 Utilities.convertArrayToMap(array), width, width, true);
@@ -129,13 +125,16 @@ public class MainActivity extends Activity {
     }
 
     public void clickParallelButton() {
-        sizeS = editSize.getText().toString();
+        sizeS = String.valueOf(matrixSpinner.getSelectedItem());
+
         try {
             size = Integer.parseInt(sizeS);
         } catch (NumberFormatException e) {
             size = 2000;
             editSize.setText("2000");
         }
+
+        numThreads = Integer.parseInt(String.valueOf(threadSpinner.getSelectedItem()));
 
         Bitmap scaled = Bitmap.createScaledBitmap(bitmap, size, size, true);
         images = Utilities.convertMapToArray(scaled);
@@ -147,7 +146,7 @@ public class MainActivity extends Activity {
                 arrayCheckboxes[1].isChecked(),
                 arrayCheckboxes[2].isChecked(),
                 arrayCheckboxes[3].isChecked(),
-                arrayCheckboxes[4].isChecked(), false);
+                arrayCheckboxes[4].isChecked(), false, numThreads);
 
         long end = System.currentTimeMillis();
         Bitmap finalMap = Bitmap.createScaledBitmap(
@@ -202,7 +201,6 @@ public class MainActivity extends Activity {
                     true);
 
             imageView.setImageBitmap(finalMap);
-
         }
     }
 }

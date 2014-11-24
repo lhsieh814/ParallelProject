@@ -30,7 +30,6 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/flipV"
         android:layout_alignBottom="@+id/flipV"
-        
         android:text="Flip Horizontally" />
 
     <CheckBox
@@ -61,8 +60,7 @@
         android:id="@+id/computationTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/flipH"
-        android:layout_alignLeft="@+id/flipH"
+        android:layout_above="@+id/threadText"
         android:layout_marginLeft="14dp" />
 
     <Button
@@ -75,20 +73,46 @@
 
     <Button
         android:id="@+id/serialButton"
+        android:layout_alignLeft="@+id/computationTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/computationTime"
         android:layout_alignParentBottom="true"
         android:text="Serial" />
 
-    <EditText
-        android:id="@+id/size"
+    <TextView
+        android:id="@+id/threadText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/computationTime"
-        android:layout_alignParentRight="true"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Number of Threads: "
+        android:layout_above="@+id/matrixSizeText" />
+
+    <Spinner
+        android:id="@+id/thread_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:ems="6"
-        android:inputType="number"
-        android:text="Matrix Size" />
+        android:entries="@array/num_threads"
+        android:layout_alignBottom="@+id/matrix_spinner"
+        android:layout_toRightOf="@+id/threadText"
+        android:layout_alignBaseline="@+id/threadText"/>
+
+    <TextView
+        android:id="@+id/matrixSizeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Matrix Size: "
+        android:layout_above="@+id/flipH" />
+
+    <Spinner
+        android:id="@+id/matrix_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="6"
+        android:entries="@array/matrix_size"
+        android:layout_toRightOf="@+id/matrixSizeText"
+        android:layout_alignBottom="@+id/flipH"
+        android:layout_alignBaseline="@+id/matrixSizeText"/>
 
 </RelativeLayout>
