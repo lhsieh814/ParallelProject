@@ -146,29 +146,36 @@ public class Utilities {
     public static int[][] matrixManipulation(int[][] matrix, boolean flipH, boolean flipV, boolean rotateCW, boolean rotateCCW, boolean sort, boolean serial) {
         int num_rows = matrix.length / NUM_THREADS;
         ExecutorService executorService = Executors.newFixedThreadPool(NUM_THREADS);
-        List<Future<int[][]>> list = new ArrayList<Future<int[][]>>();
+        Callable<int[][]> callable;
+        List<Callable<int[][]>> tasks;
+        List<Future<int[][]>> list;
 
         //flip horizontally
         if (flipH) {
             if (serial) {
                 matrix = flipHorizontally(matrix, 0, matrix.length);
             } else {
+                tasks = new ArrayList<Callable<int[][]>>();
+
                 // distribute rows to each thread
                 for (int x = 0; x < NUM_THREADS; x++) {
-                    Callable<int[][]> callable = new ParallelCallable(matrix, x * num_rows, num_rows, ManipulationType.FLIP_H);
-                    Future<int[][]> future = executorService.submit(callable);
-                    list.add(future);
+                    callable = new ParallelCallable(matrix, x * num_rows, num_rows, ManipulationType.FLIP_H);
+                    // store the callable objects in tasks to run with executor service all at once
+                    tasks.add(callable);
                 }
 
-                for (int thread_id = 0; thread_id < list.size(); thread_id++) {
-                    try {
+                try {
+                    // Run all the tasks in parallel
+                    // invokeAll() blocks until all tasks are done
+                    list = executorService.invokeAll(tasks);
+                    for (int thread_id = 0; thread_id < list.size(); thread_id++) {
                         // copy the rows returned by each thread back to the master matrix
                         System.arraycopy(list.get(thread_id).get(), 0, matrix, thread_id * num_rows, num_rows);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
                     }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
                 }
             }
         }
@@ -178,22 +185,24 @@ public class Utilities {
             if (serial) {
                 matrix = flipVertically(matrix, 0, matrix.length);
             } else {
+                tasks = new ArrayList<Callable<int[][]>>();
 
                 for (int x = 0; x < NUM_THREADS; x++) {
-                    Callable<int[][]> callable = new ParallelCallable(matrix, x * num_rows, num_rows, ManipulationType.FLIP_V);
-                    Future<int[][]> future = executorService.submit(callable);
-                    list.add(future);
+                    callable = new ParallelCallable(matrix, x * num_rows, num_rows, ManipulationType.FLIP_V);
+                    tasks.add(callable);
                 }
 
-                for (int thread_id = 0; thread_id < list.size(); thread_id++) {
-                    try {
+                try {
+                    list = executorService.invokeAll(tasks);
+                    for (int thread_id = 0; thread_id < list.size(); thread_id++) {
                         System.arraycopy(list.get(thread_id).get(), 0, matrix, matrix.length - ((thread_id + 1) * num_rows), num_rows);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
                     }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
                 }
+
             }
         }
 
@@ -202,21 +211,22 @@ public class Utilities {
             if (serial) {
                 matrix = rotateClockWise(matrix, 0, matrix.length);
             } else {
+                tasks = new ArrayList<Callable<int[][]>>();
 
                 for (int x = 0; x < NUM_THREADS; x++) {
-                    Callable<int[][]> callable = new ParallelCallable(matrix, x * num_rows, num_rows, ManipulationType.ROTATE_CW);
-                    Future<int[][]> future = executorService.submit(callable);
-                    list.add(future);
+                    callable = new ParallelCallable(matrix, x * num_rows, num_rows, ManipulationType.ROTATE_CW);
+                    tasks.add(callable);
                 }
 
-                for (int thread_id = 0; thread_id < list.size(); thread_id++) {
-                    try {
+                try {
+                    list = executorService.invokeAll(tasks);
+                    for (int thread_id = 0; thread_id < list.size(); thread_id++) {
                         System.arraycopy(list.get(thread_id).get(), 0, matrix, thread_id * num_rows, num_rows);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
                     }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
                 }
             }
         }
@@ -226,21 +236,22 @@ public class Utilities {
             if (serial) {
                 matrix = rotateCounterClockWise(matrix, 0, matrix.length);
             } else {
+                tasks = new ArrayList<Callable<int[][]>>();
 
                 for (int x = 0; x < NUM_THREADS; x++) {
-                    Callable<int[][]> callable = new ParallelCallable(matrix, x * num_rows, num_rows, ManipulationType.ROTATE_CCW);
-                    Future<int[][]> future = executorService.submit(callable);
-                    list.add(future);
+                    callable = new ParallelCallable(matrix, x * num_rows, num_rows, ManipulationType.ROTATE_CCW);
+                    tasks.add(callable);
                 }
 
-                for (int thread_id = 0; thread_id < list.size(); thread_id++) {
-                    try {
+                try {
+                    list = executorService.invokeAll(tasks);
+                    for (int thread_id = 0; thread_id < list.size(); thread_id++) {
                         System.arraycopy(list.get(thread_id).get(), 0, matrix, thread_id * num_rows, num_rows);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
                     }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
                 }
             }
         }
@@ -250,21 +261,22 @@ public class Utilities {
             if (serial) {
                 matrix = sort(matrix, 0, matrix.length);
             } else {
+                tasks = new ArrayList<Callable<int[][]>>();
 
                 for (int x = 0; x < NUM_THREADS; x++) {
-                    Callable<int[][]> callable = new ParallelCallable(matrix, x * num_rows, num_rows, ManipulationType.SORT);
-                    Future<int[][]> future = executorService.submit(callable);
-                    list.add(future);
+                    callable = new ParallelCallable(matrix, x * num_rows, num_rows, ManipulationType.SORT);
+                    tasks.add(callable);
                 }
 
-                for (int thread_id = 0; thread_id < list.size(); thread_id++) {
-                    try {
+                try {
+                    list = executorService.invokeAll(tasks);
+                    for (int thread_id = 0; thread_id < list.size(); thread_id++) {
                         System.arraycopy(list.get(thread_id).get(), 0, matrix, thread_id * num_rows, num_rows);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
                     }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
                 }
             }
         }
