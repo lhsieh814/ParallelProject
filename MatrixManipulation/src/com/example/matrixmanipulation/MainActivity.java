@@ -1,5 +1,6 @@
 package com.example.matrixmanipulation;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -7,7 +8,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v7.app.ActionBarActivity;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,7 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends Activity {
 
 	private static int RESULT_LOAD_IMAGE = 1;
 	int width, size;
@@ -53,22 +53,21 @@ public class MainActivity extends ActionBarActivity {
 			arrayCheckboxes[i] = (CheckBox) findViewById(checkboxesID[i]);
 		}
 
-		// Action listener
+		// Clear matrix size when EditText field is clicked
 		editSize.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				editSize.setText("");
 			}
 			
 		});
-		
+
+        // Serial Execution
 		buttonSerial.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				sizeS = editSize.getText().toString();
 				try {
 					size = Integer.parseInt(sizeS);
@@ -89,12 +88,12 @@ public class MainActivity extends ActionBarActivity {
 				}
 
 				long start = System.currentTimeMillis();
-				int[][] array = Utilities.dothings(images,
-						arrayCheckboxes[0].isChecked(),
-						arrayCheckboxes[1].isChecked(),
-						arrayCheckboxes[2].isChecked(),
-						arrayCheckboxes[3].isChecked(),
-						arrayCheckboxes[4].isChecked(), true);
+				int[][] array = Utilities.matrixManipulation(images,
+                        arrayCheckboxes[0].isChecked(),
+                        arrayCheckboxes[1].isChecked(),
+                        arrayCheckboxes[2].isChecked(),
+                        arrayCheckboxes[3].isChecked(),
+                        arrayCheckboxes[4].isChecked(), true);
 				long end = System.currentTimeMillis();
 				Bitmap finalMap = Bitmap.createScaledBitmap(
 						Utilities.convertArrayToMap(array), width, width, true);
@@ -107,11 +106,11 @@ public class MainActivity extends ActionBarActivity {
 
 		});
 
+        // Parallel Execution
 		buttonParallel.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				sizeS = editSize.getText().toString();
 				try {
 					size = Integer.parseInt(sizeS);
@@ -130,23 +129,26 @@ public class MainActivity extends ActionBarActivity {
 					images = Utilities.convertMapToArray(scaled);
 				}
 				long start = System.currentTimeMillis();
-				int[][] array = Utilities.dothings(images,
-						arrayCheckboxes[0].isChecked(),
-						arrayCheckboxes[1].isChecked(),
-						arrayCheckboxes[2].isChecked(),
-						arrayCheckboxes[3].isChecked(),
-						arrayCheckboxes[4].isChecked(), false);
+
+				int[][] array = Utilities.matrixManipulation(images,
+                        arrayCheckboxes[0].isChecked(),
+                        arrayCheckboxes[1].isChecked(),
+                        arrayCheckboxes[2].isChecked(),
+                        arrayCheckboxes[3].isChecked(),
+                        arrayCheckboxes[4].isChecked(), false);
+
 				long end = System.currentTimeMillis();
 				Bitmap finalMap = Bitmap.createScaledBitmap(
 						Utilities.convertArrayToMap(array), width, width, true);
 				imageView.setImageBitmap(finalMap);
 				// update original image
 				images = array;
-				computationTime.setText("Serial Execution Time is: "
+				computationTime.setText("Parallel Execution Time is: "
 						+ (end - start) + "ms.");
 			}
 		});
 
+        // Select image
 		imageView.setOnClickListener(new View.OnClickListener() {
 
 			@Override
