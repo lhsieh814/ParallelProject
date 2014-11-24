@@ -20,193 +20,189 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity {
 
-	private static int RESULT_LOAD_IMAGE = 1;
-	int width, size;
-	String sizeS;
-	Button buttonSerial, buttonParallel;
-	ImageView imageView;
-	EditText editSize;
-	Bitmap bitmap;
-	TextView computationTime;
-	CheckBox[] arrayCheckboxes = new CheckBox[5];
-	int[] checkboxesID = { R.id.flipH, R.id.flipV, R.id.rotateCW,
-			R.id.rotateCCW, R.id.sort };
-	int[][] images = null;
+    private static int RESULT_LOAD_IMAGE = 1;
+    int width, size;
+    String sizeS;
+    Button buttonSerial, buttonParallel;
+    ImageView imageView;
+    EditText editSize;
+    Bitmap bitmap;
+    TextView computationTime;
+    CheckBox[] arrayCheckboxes = new CheckBox[5];
+    int[] checkboxesID = {R.id.flipH, R.id.flipV, R.id.rotateCW,
+            R.id.rotateCCW, R.id.sort};
+    int[][] images = null;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-		Display display = getWindowManager().getDefaultDisplay();
-		width = display.getWidth();
-		width = (width * 90) / 100;
+        Display display = getWindowManager().getDefaultDisplay();
+        width = display.getWidth();
+        width = (width * 90) / 100;
 
-		// Initialization
-		buttonSerial = (Button) findViewById(R.id.serialButton);
-		buttonParallel = (Button) findViewById(R.id.parallelButton);
-		imageView = (ImageView) findViewById(R.id.imageView1);
-		computationTime = (TextView) findViewById(R.id.computationTime);
-		editSize = (EditText) findViewById(R.id.size);
+        // Initialization
+        buttonSerial = (Button) findViewById(R.id.serialButton);
+        buttonParallel = (Button) findViewById(R.id.parallelButton);
+        imageView = (ImageView) findViewById(R.id.imageView1);
+        computationTime = (TextView) findViewById(R.id.computationTime);
+        editSize = (EditText) findViewById(R.id.size);
 
-		for (int i = 0; i < arrayCheckboxes.length; i++) {
-			arrayCheckboxes[i] = (CheckBox) findViewById(checkboxesID[i]);
-		}
+        for (int i = 0; i < arrayCheckboxes.length; i++) {
+            arrayCheckboxes[i] = (CheckBox) findViewById(checkboxesID[i]);
+        }
 
-		// Clear matrix size when EditText field is clicked
-		editSize.setOnClickListener(new View.OnClickListener() {
+        // Clear matrix size when EditText field is clicked
+        editSize.setOnClickListener(new View.OnClickListener() {
 
-			@Override
-			public void onClick(View v) {
-				editSize.setText("");
-			}
-			
-		});
+            @Override
+            public void onClick(View v) {
+                editSize.setText("");
+            }
+
+        });
 
         // Serial Execution
-		buttonSerial.setOnClickListener(new View.OnClickListener() {
+        buttonSerial.setOnClickListener(new View.OnClickListener() {
 
-			@Override
-			public void onClick(View v) {
-				sizeS = editSize.getText().toString();
-				try {
-					size = Integer.parseInt(sizeS);
-				} catch (NumberFormatException e) {
-					size = 2000;
-					editSize.setText("2000");
-				}
+            @Override
+            public void onClick(View v) {
+                clickSerialButton();
+            }
 
-				if (images == null) {
-					Bitmap scaled = Bitmap.createScaledBitmap(bitmap, size,
-							size, true);
-					images = Utilities.convertMapToArray(scaled);
-				} else {
-					bitmap = Utilities.convertArrayToMap(images);
-					Bitmap scaled = Bitmap.createScaledBitmap(bitmap, size,
-							size, true);
-					images = Utilities.convertMapToArray(scaled);
-				}
-
-				long start = System.currentTimeMillis();
-				int[][] array = Utilities.matrixManipulation(images,
-                        arrayCheckboxes[0].isChecked(),
-                        arrayCheckboxes[1].isChecked(),
-                        arrayCheckboxes[2].isChecked(),
-                        arrayCheckboxes[3].isChecked(),
-                        arrayCheckboxes[4].isChecked(), true);
-				long end = System.currentTimeMillis();
-				Bitmap finalMap = Bitmap.createScaledBitmap(
-						Utilities.convertArrayToMap(array), width, width, true);
-				imageView.setImageBitmap(finalMap);
-				// update original image
-				images = array;
-				computationTime.setText("Serial Execution Time is: "
-						+ (end - start) + "ms.");
-			}
-
-		});
+        });
 
         // Parallel Execution
-		buttonParallel.setOnClickListener(new View.OnClickListener() {
+        buttonParallel.setOnClickListener(new View.OnClickListener() {
 
-			@Override
-			public void onClick(View v) {
-				sizeS = editSize.getText().toString();
-				try {
-					size = Integer.parseInt(sizeS);
-				} catch (NumberFormatException e) {
-					size = 2000;
-					editSize.setText("2000");
-				}
-				if (images == null) {
-					Bitmap scaled = Bitmap.createScaledBitmap(bitmap, size,
-							size, true);
-					images = Utilities.convertMapToArray(scaled);
-				} else {
-					bitmap = Utilities.convertArrayToMap(images);
-					Bitmap scaled = Bitmap.createScaledBitmap(bitmap, size,
-							size, true);
-					images = Utilities.convertMapToArray(scaled);
-				}
-				long start = System.currentTimeMillis();
-
-				int[][] array = Utilities.matrixManipulation(images,
-                        arrayCheckboxes[0].isChecked(),
-                        arrayCheckboxes[1].isChecked(),
-                        arrayCheckboxes[2].isChecked(),
-                        arrayCheckboxes[3].isChecked(),
-                        arrayCheckboxes[4].isChecked(), false);
-
-				long end = System.currentTimeMillis();
-				Bitmap finalMap = Bitmap.createScaledBitmap(
-						Utilities.convertArrayToMap(array), width, width, true);
-				imageView.setImageBitmap(finalMap);
-				// update original image
-				images = array;
-				computationTime.setText("Parallel Execution Time is: "
-						+ (end - start) + "ms.");
-			}
-		});
+            @Override
+            public void onClick(View v) {
+                clickParallelButton();
+            }
+        });
 
         // Select image
-		imageView.setOnClickListener(new View.OnClickListener() {
+        imageView.setOnClickListener(new View.OnClickListener() {
 
-			@Override
-			public void onClick(View arg0) {
+            @Override
+            public void onClick(View arg0) {
 
-				Intent i = new Intent(
-						Intent.ACTION_PICK,
-						android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                Intent i = new Intent(
+                        Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
-				startActivityForResult(i, RESULT_LOAD_IMAGE);
-			}
-		});
+                startActivityForResult(i, RESULT_LOAD_IMAGE);
+            }
+        });
 
-	}
+    }
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
+    public void clickSerialButton() {
+        sizeS = editSize.getText().toString();
+        try {
+            size = Integer.parseInt(sizeS);
+        } catch (NumberFormatException e) {
+            size = 2000;
+            editSize.setText("2000");
+        }
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
+        Bitmap scaled = Bitmap.createScaledBitmap(bitmap, size, size, true);
+        images = Utilities.convertMapToArray(scaled);
 
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
+        long start = System.currentTimeMillis();
+        int[][] array = Utilities.matrixManipulation(images,
+                arrayCheckboxes[0].isChecked(),
+                arrayCheckboxes[1].isChecked(),
+                arrayCheckboxes[2].isChecked(),
+                arrayCheckboxes[3].isChecked(),
+                arrayCheckboxes[4].isChecked(), true);
+        long end = System.currentTimeMillis();
+        Bitmap finalMap = Bitmap.createScaledBitmap(
+                Utilities.convertArrayToMap(array), width, width, true);
+        imageView.setImageBitmap(finalMap);
 
-		if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK
-				&& null != data) {
-			Uri selectedImage = data.getData();
-			String[] filePathColumn = { MediaStore.Images.Media.DATA };
+        // update original image
+        images = array;
+        bitmap = finalMap;
+        computationTime.setText("Serial Execution Time is: " + (end - start) + "ms.");
+    }
 
-			Cursor cursor = getContentResolver().query(selectedImage,
-					filePathColumn, null, null, null);
-			cursor.moveToFirst();
+    public void clickParallelButton() {
+        sizeS = editSize.getText().toString();
+        try {
+            size = Integer.parseInt(sizeS);
+        } catch (NumberFormatException e) {
+            size = 2000;
+            editSize.setText("2000");
+        }
 
-			int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-			String picturePath = cursor.getString(columnIndex);
-			cursor.close();
+        Bitmap scaled = Bitmap.createScaledBitmap(bitmap, size, size, true);
+        images = Utilities.convertMapToArray(scaled);
 
-			imageView = (ImageView) findViewById(R.id.imageView1);
-			bitmap = BitmapFactory.decodeFile(picturePath);
-			Bitmap finalMap = Bitmap.createScaledBitmap(bitmap, width, width,
-					true);
+        long start = System.currentTimeMillis();
 
-			imageView.setImageBitmap(finalMap);
+        int[][] array = Utilities.matrixManipulation(images,
+                arrayCheckboxes[0].isChecked(),
+                arrayCheckboxes[1].isChecked(),
+                arrayCheckboxes[2].isChecked(),
+                arrayCheckboxes[3].isChecked(),
+                arrayCheckboxes[4].isChecked(), false);
 
-		}
-	}
+        long end = System.currentTimeMillis();
+        Bitmap finalMap = Bitmap.createScaledBitmap(
+                Utilities.convertArrayToMap(array), width, width, true);
+        imageView.setImageBitmap(finalMap);
+
+        // update original image
+        images = array;
+        bitmap = finalMap;
+        computationTime.setText("Parallel Execution Time is: " + (end - start) + "ms.");
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK
+                && null != data) {
+            Uri selectedImage = data.getData();
+            String[] filePathColumn = {MediaStore.Images.Media.DATA};
+
+            Cursor cursor = getContentResolver().query(selectedImage,
+                    filePathColumn, null, null, null);
+            cursor.moveToFirst();
+
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String picturePath = cursor.getString(columnIndex);
+            cursor.close();
+
+            imageView = (ImageView) findViewById(R.id.imageView1);
+            bitmap = BitmapFactory.decodeFile(picturePath);
+            Bitmap finalMap = Bitmap.createScaledBitmap(bitmap, width, width,
+                    true);
+
+            imageView.setImageBitmap(finalMap);
+
+        }
+    }
 }
