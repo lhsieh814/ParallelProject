@@ -6,18 +6,17 @@
     <string name="action_settings">Settings</string>
 
     <string-array name="matrix_size">
-        <item>250</item>
-        <item>500</item>
-        <item>1000</item>
-        <item>1500</item>
-        <item>2000</item>
+        <item>256</item>
+        <item>512</item>
+        <item>1024</item>
+        <item>2048</item>
     </string-array>
 
     <string-array name="num_threads">
         <item>2</item>
         <item>4</item>
-        <item>5</item>
-        <item>10</item>
+        <item>8</item>
+        <item>16</item>
     </string-array>
 
 </resources>

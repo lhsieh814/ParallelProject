@@ -61,7 +61,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/threadText"
-        android:layout_marginLeft="14dp" />
+        android:layout_marginLeft="14dp"
+        android:layout_marginBottom="10dp"
+        android:textSize="18dp" />
 
     <Button
         android:id="@+id/parallelButton"
@@ -85,7 +87,9 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Number of Threads: "
-        android:layout_above="@+id/matrixSizeText" />
+        android:layout_above="@+id/matrixSizeText"
+        android:layout_marginLeft="14dp"
+        android:layout_marginBottom="5dp"/>
 
     <Spinner
         android:id="@+id/thread_spinner"
@@ -95,7 +99,7 @@
         android:entries="@array/num_threads"
         android:layout_alignBottom="@+id/matrix_spinner"
         android:layout_toRightOf="@+id/threadText"
-        android:layout_alignBaseline="@+id/threadText"/>
+        android:layout_alignBaseline="@+id/threadText" />
 
     <TextView
         android:id="@+id/matrixSizeText"
@@ -103,7 +107,9 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Matrix Size: "
-        android:layout_above="@+id/flipH" />
+        android:layout_above="@+id/flipH"
+        android:layout_marginLeft="14dp"
+        android:layout_marginBottom="15dp" />
 
     <Spinner
         android:id="@+id/matrix_spinner"
@@ -113,6 +119,6 @@
         android:entries="@array/matrix_size"
         android:layout_toRightOf="@+id/matrixSizeText"
         android:layout_alignBottom="@+id/flipH"
-        android:layout_alignBaseline="@+id/matrixSizeText"/>
+        android:layout_alignBaseline="@+id/matrixSizeText" />
 
 </RelativeLayout>
